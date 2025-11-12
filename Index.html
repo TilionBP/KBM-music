@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KBM — KhemiBertoniMusic</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0b0b0b"/>
+</head>
+<body>
+  <header class="topbar">
+    <div class="logo">
+      <div class="logo-circle">KBM</div>
+      <div class="brand">KhemiBertoniMusic</div>
+    </div>
+    <button id="installBtn" class="tiny-btn">Install</button>
+  </header>
+
+  <main class="container">
+    <section class="now">
+      <div id="cover" class="cover">🎵</div>
+      <div class="track-info">
+        <div id="title">KBM — Ready</div>
+        <div id="artist">Online Playlist</div>
+      </div>
+    </section>
+
+    <section class="controls">
+      <audio id="audio" preload="none"></audio>
+      <div class="buttons">
+        <button id="prev">⏮</button>
+        <button id="play">▶️</button>
+        <button id="next">⏭</button>
+      </div>
+      <input id="seek" type="range" min="0" max="100" value="0"/>
+      <div class="time">
+        <span id="cur">0:00</span>
+        <span id="dur">0:00</span>
+      </div>
+    </section>
+
+    <section class="playlist">
+      <input id="search" placeholder="Search song or artist..." />
+      <ul id="list"></ul>
+    </section>
+  </main>
+
+  <footer class="foot">KBM — KhemiBertoniMusic · Online streaming</footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
