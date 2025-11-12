@@ -1,70 +1,64 @@
-const player = document.getElementById('player');
-const seek = document.getElementById('seek');
-const list = document.getElementById('list');
-const search = document.getElementById('search');
-const playpause = document.getElementById('playpause');
-const playicon = document.getElementById('playicon');
-const nowtitle = document.getElementById('nowtitle');
-
 const songs = [
-  { title: "KBM Intro", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
-  { title: "City Lights", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
-  { title: "Ocean Drive", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
-  { title: "Dreamscape", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" }
+  {
+    title: "Inspiring Corporate",
+    artist: "Ashot-Danielyan-Composer",
+    url: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Ashot_Danielyan_Composer/Inspiring_Corporate/Ashot_Danielyan_Composer_-_Inspiring_Corporate.mp3"
+  },
+  {
+    title: "Dreams",
+    artist: "Benjamin Tissot (Bensound)",
+    url: "https://www.bensound.com/bensound-music/bensound-dreams.mp3"
+  },
+  {
+    title: "Sunny",
+    artist: "Benjamin Tissot (Bensound)",
+    url: "https://www.bensound.com/bensound-music/bensound-sunny.mp3"
+  },
+  {
+    title: "Energy",
+    artist: "Benjamin Tissot (Bensound)",
+    url: "https://www.bensound.com/bensound-music/bensound-energy.mp3"
+  },
+  {
+    title: "Epic",
+    artist: "Benjamin Tissot (Bensound)",
+    url: "https://www.bensound.com/bensound-music/bensound-epic.mp3"
+  }
 ];
 
-let current = null;
-let playing = false;
+const audio = new Audio();
+let currentSongIndex = 0;
 
-function loadSongs(filter=""){
-  list.innerHTML = "";
-  songs.filter(s=>s.title.toLowerCase().includes(filter.toLowerCase()))
-       .forEach((s,i)=>{
-         const li = document.createElement("li");
-         li.textContent = s.title;
-         const b = document.createElement("button");
-         b.textContent = "Play";
-         b.onclick = ()=>playSong(i);
-         li.appendChild(b);
-         list.appendChild(li);
-       });
+function loadSong(index) {
+  const song = songs[index];
+  audio.src = song.url;
+  document.getElementById("song-title").textContent = song.title;
+  document.getElementById("song-artist").textContent = song.artist;
 }
 
-function playSong(i){
-  const song = songs[i];
-  player.src = song.url;
-  player.play();
-  nowtitle.textContent = song.title;
-  playing = true;
-  playicon.textContent = "⏸️";
-}
-
-playpause.onclick = ()=>{
-  if(!playing && player.src){
-    player.play();
-    playing = true;
-    playicon.textContent = "⏸️";
+function playPause() {
+  if (audio.paused) {
+    audio.play();
+    document.getElementById("play-btn").textContent = "⏸ Pause";
   } else {
-    player.pause();
-    playing = false;
-    playicon.textContent = "▶️";
+    audio.pause();
+    document.getElementById("play-btn").textContent = "▶ Play";
   }
+}
+
+function nextSong() {
+  currentSongIndex = (currentSongIndex + 1) % songs.length;
+  loadSong(currentSongIndex);
+  audio.play();
+}
+
+function prevSong() {
+  currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+  loadSong(currentSongIndex);
+  audio.play();
+}
+
+// cargar la primera canción
+window.onload = function() {
+  loadSong(currentSongIndex);
 };
-
-seek.addEventListener("input", ()=>{
-  if(player.duration){
-    player.currentTime = player.duration * (seek.value/100);
-  }
-});
-
-player.addEventListener("timeupdate", ()=>{
-  if(player.duration){
-    seek.value = (player.currentTime / player.duration) * 100;
-  }
-});
-
-search.addEventListener("input", e=>{
-  loadSongs(e.target.value);
-});
-
-loadSongs();
